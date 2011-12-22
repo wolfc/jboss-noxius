@@ -38,6 +38,7 @@ import java.util.Set;
  * @author <a href="mailto:cdewolf@redhat.com">Carlo de Wolf</a>
  */
 class NoxiusFileManager extends ForwardingJavaFileManager<JavaFileManager> {
+//    private static final URLClassLoader BOOT_CLASS_LOADER = new URLClassLoader(Launcher.getBootstrapClassPath().getURLs());
     private Collection<URLJavaFileObject> sources = new LinkedList<URLJavaFileObject>();
     private Map<String, InMemJavaFileObject> classes = new HashMap<String, InMemJavaFileObject>();
 
@@ -65,10 +66,18 @@ class NoxiusFileManager extends ForwardingJavaFileManager<JavaFileManager> {
     }
 
     public ClassLoader getClassLoader(Location location) {
+//        System.out.println("NoxiusFileManager.getClassLoader(" + location + ")");
+        final ClassLoader classLoader;
         // we could, but we don't
         if (location == StandardLocation.CLASS_OUTPUT)
             throw new RuntimeException("NYI: org.jboss.noxius.bootstrap.NoxiusFileManager.getClassLoader(" + location + ")");
-        return super.getClassLoader(location);
+        // make sure we have the Java runtime
+//        else if (location == StandardLocation.CLASS_PATH)
+//            classLoader = BOOT_CLASS_LOADER;
+        else
+            classLoader = super.getClassLoader(location);
+//        System.out.println("classLoader = " + Arrays.toString(((URLClassLoader) classLoader).getURLs()));
+        return classLoader;
     }
 
     public Iterable<JavaFileObject> list(Location location, String packageName, Set<JavaFileObject.Kind> kinds, boolean recurse) throws IOException {

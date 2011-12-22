@@ -19,24 +19,11 @@
  * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
-package org.jboss.noxius.bootstrap;
+import javax.tools.ToolProvider;
+import java.lang.System;
 
-import javax.tools.Diagnostic;
-import javax.tools.JavaFileObject;
-
-/**
- * @author <a href="mailto:cdewolf@redhat.com">Carlo de Wolf</a>
- */
-public class NoxiusCompileException extends Exception {
-    private final Iterable<Diagnostic<? extends JavaFileObject>> diagnostics;
-
-    public NoxiusCompileException(final String message, final Iterable<Diagnostic<? extends JavaFileObject>> diagnostics) {
-        super(message);
-        this.diagnostics = diagnostics;
-    }
-
-    @Override
-    public String getMessage() {
-        return super.getMessage() + ": " + diagnostics;
+public class bootstrap {
+    public static void main(final String[] args) {
+        System.out.println(System.getProperty("java.home"));
     }
 }

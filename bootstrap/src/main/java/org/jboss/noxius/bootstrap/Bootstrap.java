@@ -21,8 +21,10 @@
  */
 package org.jboss.noxius.bootstrap;
 
+import java.io.File;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.net.URL;
 
@@ -30,15 +32,13 @@ import java.net.URL;
  * @author <a href="mailto:cdewolf@redhat.com">Carlo de Wolf</a>
  */
 public class Bootstrap {
-    public static void main(final String[] args) throws ClassNotFoundException, NoxiusCompileException, URISyntaxException, NoSuchMethodException {
+    public static void main(final String[] args) throws ClassNotFoundException, NoxiusCompileException, URISyntaxException, NoSuchMethodException, MalformedURLException {
         final Bootstrap bootstrap = new Bootstrap();
         System.exit(bootstrap.exec(args));
     }
 
-    public int exec(final String[] args) throws ClassNotFoundException, NoxiusCompileException, URISyntaxException, NoSuchMethodException {
-        final URL bootstrapJava = Bootstrap.class.getResource("/bootstrap.java");
-        if (bootstrapJava == null)
-            throw new IllegalStateException("Can't locate resource bootstrap.java");
+    public int exec(final String[] args) throws ClassNotFoundException, NoxiusCompileException, URISyntaxException, NoSuchMethodException, MalformedURLException {
+        final URL bootstrapJava = new File("bootstrap.java").toURI().toURL();
         final Noxius noxius = new Noxius();
         final Class<?> bootstrap = noxius.compile(bootstrapJava, "bootstrap");
         final Method main = bootstrap.getMethod("main", String[].class);

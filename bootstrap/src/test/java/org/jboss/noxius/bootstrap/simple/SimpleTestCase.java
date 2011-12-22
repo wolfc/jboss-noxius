@@ -22,6 +22,7 @@
 package org.jboss.noxius.bootstrap.simple;
 
 import org.jboss.noxius.bootstrap.Noxius;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.lang.reflect.Method;
@@ -38,6 +39,19 @@ public class SimpleTestCase {
         final Noxius noxius = new Noxius();
         final String path = "org/jboss/noxius/bootstrap/simple/";
         final Class<?> noxClass = noxius.compile(resource, path.replace('/', '.') + "nox");
+        final Method main = noxClass.getMethod("main", String[].class);
+        // cast to make sure we call the varargs one
+        main.invoke(null, (Object) new String[0]);
+    }
+
+    @Ignore
+    @Test
+    public void testNox() throws Exception {
+        System.out.println(System.getProperty("java.class.path"));
+        final URL resource = getClass().getResource("test.nox");
+        final Noxius noxius = new Noxius();
+        final String path = "org/jboss/noxius/bootstrap/simple/";
+        final Class<?> noxClass = noxius.compile(resource, path.replace('/', '.') + "test");
         final Method main = noxClass.getMethod("main", String[].class);
         // cast to make sure we call the varargs one
         main.invoke(null, (Object) new String[0]);

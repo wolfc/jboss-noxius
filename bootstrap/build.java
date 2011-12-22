@@ -19,12 +19,32 @@
  * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
-import org.jboss.noxius.Noxius;
+import static com.sun.tools.javac.Main.compile;
 
-import javax.tools.ToolProvider;
+import java.io.File;
+import java.lang.Class;
+import java.lang.String;
+import java.lang.System;
+import java.util.ArrayList;
+import java.util.List;
 
-public class bootstrap {
+public class build {
     public static void main(final String[] args) throws Exception {
-        Noxius.with(ToolProvider.getSystemToolClassLoader()).execute("build.java", "build", args);
+        System.out.println("**** IT WORKS ****");
+        System.out.println(build.class.getClassLoader());
+        System.out.println(Class.forName("com.sun.tools.javac.Main", false, build.class.getClassLoader()));
+
+        /*
+        new File("target/classes").mkdirs();
+        // javac -sourcepath src/main/java -d target/classes `find src/main/java -name *.java`
+        final List<String> compilerArgs = new ArrayList<String>();
+        //final String[] compilerArgs = { "-sourcepath", "src/main/java", "-d", "target/classes", "src/main/java/org/jboss/noxius/Noxius.java" };
+        compilerArgs.add("-sourcepath");
+        compilerArgs.add("src/main/java");
+        compilerArgs.add("-d");
+        compilerArgs.add("target/classes");
+        compilerArgs.addAll(filesIn("src/main/java"));
+        System.exit(compile(compilerArgs.toArray(new String[0])));
+        */
     }
 }

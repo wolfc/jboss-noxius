@@ -39,7 +39,7 @@ public class Bootstrap {
 
     public int exec(final String[] args) throws ClassNotFoundException, NoxiusCompileException, URISyntaxException, NoSuchMethodException, MalformedURLException {
         final URL bootstrapJava = new File("bootstrap.java").toURI().toURL();
-        final Noxius noxius = new Noxius();
+        final NoxiusCompiler noxius = new NoxiusCompiler();
         final Class<?> bootstrap = noxius.compile(bootstrapJava, "bootstrap");
         final Method main = bootstrap.getMethod("main", String[].class);
         try {

@@ -21,7 +21,7 @@
  */
 package org.jboss.noxius.bootstrap.simple;
 
-import org.jboss.noxius.bootstrap.Noxius;
+import org.jboss.noxius.bootstrap.NoxiusCompiler;
 import org.junit.Ignore;
 import org.junit.Test;
 
@@ -36,7 +36,7 @@ public class SimpleTestCase {
     public void test1() throws Exception {
         System.out.println(System.getProperty("java.class.path"));
         final URL resource = getClass().getResource("nox.java");
-        final Noxius noxius = new Noxius();
+        final NoxiusCompiler noxius = new NoxiusCompiler();
         final String path = "org/jboss/noxius/bootstrap/simple/";
         final Class<?> noxClass = noxius.compile(resource, path.replace('/', '.') + "nox");
         final Method main = noxClass.getMethod("main", String[].class);
@@ -49,7 +49,7 @@ public class SimpleTestCase {
     public void testNox() throws Exception {
         System.out.println(System.getProperty("java.class.path"));
         final URL resource = getClass().getResource("test.nox");
-        final Noxius noxius = new Noxius();
+        final NoxiusCompiler noxius = new NoxiusCompiler();
         final String path = "org/jboss/noxius/bootstrap/simple/";
         final Class<?> noxClass = noxius.compile(resource, path.replace('/', '.') + "test");
         final Method main = noxClass.getMethod("main", String[].class);

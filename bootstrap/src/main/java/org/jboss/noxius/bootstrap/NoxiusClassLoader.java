@@ -24,6 +24,8 @@ package org.jboss.noxius.bootstrap;
 import javax.tools.JavaFileObject;
 import javax.tools.StandardLocation;
 import java.io.IOException;
+import java.net.URLClassLoader;
+import java.util.Arrays;
 
 /**
  * @author <a href="mailto:cdewolf@redhat.com">Carlo de Wolf</a>
@@ -48,5 +50,13 @@ class NoxiusClassLoader extends ClassLoader {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    @Override
+    public String toString() {
+        return "NoxiusClassLoader{" +
+                "parent=" + Arrays.toString(((URLClassLoader) getParent()).getURLs()) + "," +
+                "fileManager=" + fileManager +
+                '}';
     }
 }

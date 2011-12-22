@@ -19,12 +19,19 @@
  * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
-import org.jboss.noxius.Noxius;
+package org.jboss.noxius;
 
-import javax.tools.ToolProvider;
+import org.jboss.noxius.bootstrap.NoxiusCompileException;
 
-public class bootstrap {
-    public static void main(final String[] args) throws Exception {
-        Noxius.with(ToolProvider.getSystemToolClassLoader()).execute("build.java", "build", args);
-    }
+import java.net.MalformedURLException;
+import java.net.URISyntaxException;
+import java.net.URL;
+
+/**
+ * @author <a href="mailto:cdewolf@redhat.com">Carlo de Wolf</a>
+ */
+public interface CompilationEnvironment {
+    int execute(String fileName, String className, String... args) throws ClassNotFoundException, NoxiusCompileException, URISyntaxException, NoSuchMethodException, MalformedURLException;
+
+    int execute(URL resource, String className, String... args) throws ClassNotFoundException, NoxiusCompileException, URISyntaxException, NoSuchMethodException;
 }

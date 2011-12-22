@@ -34,18 +34,22 @@ import java.util.Arrays;
 /**
  * @author <a href="mailto:cdewolf@redhat.com">Carlo de Wolf</a>
  */
-public class Noxius {
+public class NoxiusCompiler {
     static final JavaCompiler COMPILER = ToolProvider.getSystemJavaCompiler();
 
     public Class<?> compile(final URL resource, final String className) throws URISyntaxException, ClassNotFoundException, NoxiusCompileException {
+        return compile(resource, className, null);
+    }
+
+    public Class<?> compile(final URL resource, final String className, final Iterable<String> options) throws URISyntaxException, ClassNotFoundException, NoxiusCompileException {
         final DiagnosticCollector<JavaFileObject> diagnostics = new DiagnosticCollector<JavaFileObject>();
         final StandardJavaFileManager standardJavaFileManager = COMPILER.getStandardFileManager(diagnostics, null, null);
         final Iterable<URLJavaFileObject> compilationUnits = Arrays.asList(new URLJavaFileObject(resource, className));
         final NoxiusFileManager fileManager = new NoxiusFileManager(standardJavaFileManager, compilationUnits);
         final Writer out = null; // System.err
-        final Iterable<String> options = null;
         final Iterable<String> classes = null;
-        final boolean result = COMPILER.getTask(out, fileManager, diagnostics, options, classes, compilationUnits).call();
+//        System.out.println("options = " + options);
+        final boolean result = ToolProvider.getSystemJavaCompiler().getTask(out, fileManager, diagnostics, options, classes, compilationUnits).call();
         if (!result)
             throw new NoxiusCompileException("compilation failed", diagnostics.getDiagnostics());
         final ClassLoader parent = Thread.currentThread().getContextClassLoader();

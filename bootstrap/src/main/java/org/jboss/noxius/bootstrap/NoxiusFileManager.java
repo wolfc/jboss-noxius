@@ -71,9 +71,8 @@ class NoxiusFileManager extends ForwardingJavaFileManager<JavaFileManager> {
         // we could, but we don't
         if (location == StandardLocation.CLASS_OUTPUT)
             throw new RuntimeException("NYI: org.jboss.noxius.bootstrap.NoxiusFileManager.getClassLoader(" + location + ")");
-        // make sure we have the Java runtime
 //        else if (location == StandardLocation.CLASS_PATH)
-//            classLoader = BOOT_CLASS_LOADER;
+//            classLoader = Thread.currentThread().getContextClassLoader();
         else
             classLoader = super.getClassLoader(location);
 //        System.out.println("classLoader = " + Arrays.toString(((URLClassLoader) classLoader).getURLs()));
@@ -81,6 +80,7 @@ class NoxiusFileManager extends ForwardingJavaFileManager<JavaFileManager> {
     }
 
     public Iterable<JavaFileObject> list(Location location, String packageName, Set<JavaFileObject.Kind> kinds, boolean recurse) throws IOException {
+//        System.out.println("list(" + location + ", " + packageName + ", " + kinds + ", " + recurse + ")");
         final Collection<JavaFileObject> result = new LinkedList<JavaFileObject>();
         if (location == StandardLocation.SOURCE_PATH && kinds.contains(JavaFileObject.Kind.SOURCE)) {
             for (final URLJavaFileObject source : sources) {
@@ -106,7 +106,8 @@ class NoxiusFileManager extends ForwardingJavaFileManager<JavaFileManager> {
     }
 
     public boolean handleOption(String current, Iterator<String> remaining) {
-        throw new RuntimeException("NYI: org.jboss.noxius.bootstrap.NoxiusFileManager.handleOption");
+        //throw new RuntimeException("NYI: org.jboss.noxius.bootstrap.NoxiusFileManager.handleOption");
+        return super.handleOption(current, remaining);
     }
 
     public boolean hasLocation(Location location) {
@@ -118,6 +119,7 @@ class NoxiusFileManager extends ForwardingJavaFileManager<JavaFileManager> {
     }
 
     public JavaFileObject getJavaFileForInput(Location location, String className, JavaFileObject.Kind kind) throws IOException {
+//        System.out.println("getJavaFileForInput(" + location + ", " + className + ", " + kind + ")");
         if (location == StandardLocation.CLASS_OUTPUT && kind == JavaFileObject.Kind.CLASS) {
             return classes.get(className);
         }

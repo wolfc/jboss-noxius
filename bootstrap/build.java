@@ -19,32 +19,47 @@
  * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
-import static com.sun.tools.javac.Main.compile;
 
 import java.io.File;
-import java.lang.Class;
-import java.lang.String;
-import java.lang.System;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
-public class build {
-    public static void main(final String[] args) throws Exception {
-        System.out.println("**** IT WORKS ****");
-        System.out.println(build.class.getClassLoader());
-        System.out.println(Class.forName("com.sun.tools.javac.Main", false, build.class.getClassLoader()));
+import static com.sun.tools.javac.Main.compile;
 
-        /*
+public class build {
+    private static Collection<String> filesIn(final String directoryName) {
+        final Collection<String> files = new ArrayList<String>();
+        final File directory = new File(directoryName);
+        if (!directory.isDirectory())
+            return Collections.EMPTY_LIST;
+        for (File file : directory.listFiles()) {
+            if (file.isDirectory())
+                files.addAll(filesIn(file.getAbsolutePath()));
+            else
+                files.add(file.getAbsolutePath());
+        }
+        return files;
+    }
+
+    private static void jar(final String... args) {
+        sun.tools.jar.Main.main(args);
+    }
+
+    public static void main(final String[] args) throws Exception {
         new File("target/classes").mkdirs();
+
         // javac -sourcepath src/main/java -d target/classes `find src/main/java -name *.java`
         final List<String> compilerArgs = new ArrayList<String>();
-        //final String[] compilerArgs = { "-sourcepath", "src/main/java", "-d", "target/classes", "src/main/java/org/jboss/noxius/Noxius.java" };
         compilerArgs.add("-sourcepath");
         compilerArgs.add("src/main/java");
         compilerArgs.add("-d");
         compilerArgs.add("target/classes");
         compilerArgs.addAll(filesIn("src/main/java"));
-        System.exit(compile(compilerArgs.toArray(new String[0])));
-        */
+        compile(compilerArgs.toArray(new String[0]));
+
+        //jar cvfe target/jboss-noxius-bootstrap.jar org.jboss.noxius.bootstrap.Bootstrap -C target/classes/ .
+        jar("cvfe", "target/jboss-noxius-bootstrap.jar", "org.jboss.noxius.bootstrap.Bootstrap", "-C", "target/classes/", ".");
     }
 }

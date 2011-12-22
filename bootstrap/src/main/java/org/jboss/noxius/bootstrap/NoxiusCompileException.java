@@ -35,6 +35,10 @@ public class NoxiusCompileException extends Exception {
         this.diagnostics = diagnostics;
     }
 
+    public Iterable<Diagnostic<? extends JavaFileObject>> getDiagnostics() {
+        return diagnostics;
+    }
+
     @Override
     public String getMessage() {
         return super.getMessage() + ": " + diagnostics;

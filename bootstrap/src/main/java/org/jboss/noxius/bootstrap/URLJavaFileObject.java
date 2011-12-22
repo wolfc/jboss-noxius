@@ -36,6 +36,7 @@ class URLJavaFileObject extends SimpleJavaFileObject {
     protected final URL url;
     protected final String binaryName;
     private URLConnection urlConnection;
+    private StringBuilder content;
 
     /**
      * Construct an URLJavaFileObject of the given kind and with the
@@ -52,15 +53,18 @@ class URLJavaFileObject extends SimpleJavaFileObject {
 
     @Override
     public CharSequence getCharContent(boolean ignoreEncodingErrors) throws IOException {
+        // TODO: thread safety?
+        if (content != null)
+            return content;
 //        final Class[] expectedContentType = { String.class };
 //        final CharSequence charContent = (CharSequence) getURLConnection().getContent(expectedContentType);
-        final StringBuilder sb = new StringBuilder();
+        content = new StringBuilder();
         final InputStream in = new BufferedInputStream(getURLConnection().getInputStream());
         try {
             int c;
             while((c = in.read()) != -1)
-                sb.append((char) c);
-            return sb;
+                content.append((char) c);
+            return content;
         } finally {
             in.close();
         }
@@ -71,5 +75,14 @@ class URLJavaFileObject extends SimpleJavaFileObject {
             urlConnection = url.openConnection();
         }
         return urlConnection;
+    }
+
+    @Override
+    public String toString() {
+        return "URLJavaFileObject{" +
+                "binaryName='" + binaryName + '\'' +
+                ", url=" + url +
+                ", urlConnection=" + urlConnection +
+                '}';
     }
 }

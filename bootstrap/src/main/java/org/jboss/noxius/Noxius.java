@@ -21,11 +21,17 @@
  */
 package org.jboss.noxius;
 
+import java.net.MalformedURLException;
+
 /**
  * @author <a href="mailto:cdewolf@redhat.com">Carlo de Wolf</a>
  */
 public class Noxius {
     public static CompilationEnvironment with(final ClassLoader classLoader) {
         return new NoxiusCompilationEnvironment(classLoader);
+    }
+
+    public static CompilationEnvironment with(final String... resources) throws MalformedURLException {
+        return new NoxiusCompilationEnvironment(resources);
     }
 }

@@ -32,6 +32,7 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -52,6 +53,21 @@ class NoxiusCompilationEnvironment implements CompilationEnvironment {
 //            sb.append(url.getFile()).append(File.pathSeparator);
         options.add(sb.toString());
         this.classLoader = classLoader;
+    }
+
+    NoxiusCompilationEnvironment(final String... resources) throws MalformedURLException {
+        final Collection<URL> urls = new ArrayList<URL>();
+        //options.add(OptionName.CLASSPATH.optionName);
+        options.add("-classpath");
+        final StringBuilder sb = new StringBuilder();
+        for (String resource : resources) {
+            urls.add(new File(resource).toURI().toURL());
+            sb.append(resource).append(File.pathSeparator);
+        }
+//        for (URL url : ((URLClassLoader) NoxiusCompilationEnvironment.class.getClassLoader()).getURLs())
+//            sb.append(url.getFile()).append(File.pathSeparator);
+        options.add(sb.toString());
+        this.classLoader = new URLClassLoader(urls.toArray(new URL[0]));
     }
 
     @Override

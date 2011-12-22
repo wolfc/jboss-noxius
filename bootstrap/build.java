@@ -21,14 +21,20 @@
  */
 
 import java.io.File;
+import java.lang.RuntimeException;
+import java.lang.String;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
-import static com.sun.tools.javac.Main.compile;
-
 public class build {
+    private static void compile(final Collection<String> options) {
+        final int result = com.sun.tools.javac.Main.compile(options.toArray(new String[0]));
+        if (result != 0)
+            throw new RuntimeException("Compilation failed");
+    }
+
     private static Collection<String> filesIn(final String directoryName) {
         final Collection<String> files = new ArrayList<String>();
         final File directory = new File(directoryName);
@@ -57,7 +63,7 @@ public class build {
         compilerArgs.add("-d");
         compilerArgs.add("target/classes");
         compilerArgs.addAll(filesIn("src/main/java"));
-        compile(compilerArgs.toArray(new String[0]));
+        compile(compilerArgs);
 
         //jar cvfe target/jboss-noxius-bootstrap.jar org.jboss.noxius.bootstrap.Bootstrap -C target/classes/ .
         jar("cvfe", "target/jboss-noxius-bootstrap.jar", "org.jboss.noxius.bootstrap.Bootstrap", "-C", "target/classes/", ".");

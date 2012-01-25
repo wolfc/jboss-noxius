@@ -48,8 +48,16 @@ public class Downloader {
     }
 
     public static void download(final String spec, final String targetFileName) throws IOException {
-        final URL url = new URL(spec);
+        download(spec, targetFileName, true);
+    }
+
+    public static void download(final String spec, final String targetFileName, final boolean useExisting) throws IOException {
         final File target = new File(targetFileName);
+        if (useExisting && target.exists()) {
+            log.log(Level.INFO, targetFileName + " exists, skipping download");
+            return;
+        }
+        final URL url = new URL(spec);
         final long targetLastModified = target.lastModified();
         final URLConnection conn = url.openConnection();
         conn.setIfModifiedSince(targetLastModified);

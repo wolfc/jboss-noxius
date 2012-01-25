@@ -35,5 +35,6 @@ public class SimpleDownloadTestCase {
         new File("lib").mkdirs();
 
         Downloader.download("http://repo1.maven.org/maven2/org/apache/ivy/ivy/2.2.0/ivy-2.2.0.jar", "lib/ivy-2.2.0.jar");
+        Downloader.download("http://repo1.maven.org/maven2/org/apache/ivy/ivy/2.2.0/ivy-2.2.0-sources.jar", "lib/ivy-2.2.0-sources.jar");
     }
 }

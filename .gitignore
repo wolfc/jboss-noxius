@@ -1,4 +1,7 @@
 /.idea
+/.ivy2
+/lib
 /out
 *.iml
 target
+/plugins/ant/lib

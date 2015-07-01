@@ -32,7 +32,7 @@ import java.net.URLConnection;
 /**
  * @author <a href="mailto:cdewolf@redhat.com">Carlo de Wolf</a>
  */
-class URLJavaFileObject extends SimpleJavaFileObject {
+class URLJavaFileObject extends AbstractJavaFileObject {
     protected final URL url;
     protected final String binaryName;
     private URLConnection urlConnection;
@@ -46,7 +46,7 @@ class URLJavaFileObject extends SimpleJavaFileObject {
      * @param binaryName the binary name of this file object
      */
     URLJavaFileObject(final URL url, final String binaryName) throws URISyntaxException {
-        super(url.toURI(), Kind.SOURCE);
+        super(binaryName.replace(".", "/") + ".java", url.toURI(), Kind.SOURCE);
         this.url = url;
         this.binaryName = binaryName;
     }

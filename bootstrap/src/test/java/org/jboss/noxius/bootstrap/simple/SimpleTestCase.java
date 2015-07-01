@@ -62,7 +62,7 @@ public class SimpleTestCase {
         }
     }
 
-    @Ignore
+    @Ignore("the compiler can't deal with .nox extension")
     @Test
     public void testNox() throws Exception {
         System.out.println(System.getProperty("java.class.path"));

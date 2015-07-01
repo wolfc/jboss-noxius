@@ -1,0 +1,2 @@
+Main-Class: org.jboss.noxius.jar.Main
+Noxius-Main: hello
